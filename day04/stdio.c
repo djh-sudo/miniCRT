@@ -29,7 +29,8 @@ static int open(const char* path, int flag, int mode) {
     asm volatile("movl $5, %%eax\n\t"
                  CALL_PARAMETER
                  :"=m"(fd)
-                 :"m"(path), "m"(flag), "m"(mode));
+                 :"m"(path), "m"(flag), "m"(mode)
+                 :"%ebx");
     return fd;
 }
 
@@ -38,7 +39,8 @@ static int read(int fd, void* buffer, unsigned int size) {
     asm volatile("movl $3, %%eax\n\t"
                  CALL_PARAMETER
                  :"=m"(ret)
-                 :"m"(fd), "m"(buffer), "m"(size));
+                 :"m"(fd), "m"(buffer), "m"(size)
+                 :"%ebx");
     return ret;  
 }
 
@@ -47,7 +49,9 @@ static int write(int fd, const void* buffer, unsigned int size) {
     asm volatile("movl $4, %%eax\n\t"
                  CALL_PARAMETER
                  :"=m"(ret)
-                 :"m"(fd), "m"(buffer), "m"(size));
+                 :"m"(fd), "m"(buffer), "m"(size)
+                 // this will saing the %ebx!
+                 :"%ebx");
     return ret;
 }
 
@@ -56,7 +60,8 @@ static int seek(int fd, int offset, int mode) {
     asm volatile("movl $19, %%eax\n\t"
                   CALL_PARAMETER
                   :"=m"(ret)
-                  :"m"(fd), "m"(offset), "m"(mode));
+                  :"m"(fd), "m"(offset), "m"(mode)
+                  :"%ebx");
     return ret;
 }
 
@@ -67,7 +72,8 @@ static int close(int fd) {
                  "int $0x80\n\t"
                  "movl %%eax, %0\n\t"
                  :"=m"(ret)
-                 :"m"(fd));
+                 :"m"(fd)
+                 :"%ebx");
     return ret;
 }
 // C standard API
