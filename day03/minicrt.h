@@ -17,6 +17,7 @@ int mini_crt_heap_init();
 int strcmp(const char* src, const char* dst);
 char* strcpy(char* dst, const char* src);
 unsigned int strlen(const char* str);
+char* itoa(int n, char* str, int radix);
 
 // file and I/O
 typedef int FILE;

@@ -23,13 +23,13 @@ obj: Makefile
 	make malloc
 	make stdio
 	make string
-	make main
 
 link: Makefile
 	ar -rs $(BUILD_PATH)/minicrt.a \
 	$(BUILD_PATH)/entry.o $(BUILD_PATH)/malloc.o $(BUILD_PATH)/stdio.o $(BUILD_PATH)/string.o
 
 update: Makefile
+	make main
 	ld -static -e mini_crt_entry \
 	$(BUILD_PATH)/entry.o $(BUILD_PATH)/main.o $(BUILD_PATH)/minicrt.a \
 	-o $(BUILD_PATH)/main
